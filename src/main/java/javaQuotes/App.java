@@ -11,11 +11,13 @@ import java.io.FileReader;
 
 public class App {
     public static void main(String[] args) {
+        Quote[] output = null;
         try {
-            jsonParse(args[0]);
+            output = jsonParse(args[0]);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
     }
 
     public static Quote[] jsonParse(String path) throws FileNotFoundException {
@@ -23,7 +25,10 @@ public class App {
         BufferedReader reader = new BufferedReader(new FileReader(path));
         Quote[] output = gson.fromJson(reader, Quote[].class);
 
-        System.out.println(output);
+        for (Quote q : output) {
+            System.out.println(q.toString());
+        }
+
         return output;
     }
 }
