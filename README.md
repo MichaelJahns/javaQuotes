@@ -1,5 +1,3 @@
-# javaQuotes
-JSON parsing with GSON java
 
 ### Instructions For Use
 `git clone` this repository onto your machine
@@ -13,5 +11,4 @@ JSON parsing with GSON java
 4. Paste the path of the desired json in Program Arguments
 5. Run app.java using the arrow in the top right
 6. The parsed JSON will output to the console
-
 
