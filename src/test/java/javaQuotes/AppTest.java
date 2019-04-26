@@ -19,7 +19,7 @@ public class AppTest {
         String expected1 = "Marilyn Monroe:  “I am good, but not an angel. I do sin, but I am not the devil. I am just a small girl in a big world trying to find someone to love.” 18651 likes";
         String expected2 = "买证★买证件★买印第安纳大学布鲁明顿分校毕业证:  “来自QQ/微信：996330050的爱*-*0 likes";
         String expected50 = "买证★买证件★买索诺玛州立大学毕业证:  “来自QQ/微信：996330050的爱*-*0 likes";
-        Quote[] actual = null;
+        JsonQuote[] actual = null;
         try {
             actual = jsonParse(path1);
         } catch (FileNotFoundException e) {
@@ -36,7 +36,7 @@ public class AppTest {
         String badPath = "/farts/inTheFarthouse.json";
         String expectedError = "\\farts\\inTheFarthouse.json (The system cannot find the path specified)";
 
-        Quote[] actual = null;
+        JsonQuote[] actual = null;
         try {
             actual = jsonParse(badPath);
         } catch (FileNotFoundException e) {
