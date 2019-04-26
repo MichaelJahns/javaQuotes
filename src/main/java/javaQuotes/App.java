@@ -11,9 +11,10 @@ import java.io.FileReader;
 
 public class App {
     public static void main(String[] args) {
-        Quote[] output = null;
         try {
-            output = jsonParse(args[0]);
+            Quote[] quotes = jsonParse(args[0]);
+            Quote output = randomQuote(Math.random(), quotes);
+            System.out.println(output);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -24,11 +25,12 @@ public class App {
         Gson gson = new Gson();
         BufferedReader reader = new BufferedReader(new FileReader(path));
         Quote[] output = gson.fromJson(reader, Quote[].class);
+        return output;
+    }
 
-        for (Quote q : output) {
-            System.out.println(q.toString());
-        }
-
+    public static Quote randomQuote(double random, Quote[] quotes) {
+        int randomIndex = (int) (random * quotes.length);
+        Quote output = quotes[randomIndex];
         return output;
     }
 }

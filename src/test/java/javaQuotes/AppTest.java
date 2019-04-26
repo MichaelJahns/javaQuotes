@@ -14,7 +14,8 @@ public class AppTest {
 
     @Test
     public void testJsonParse() {
-        String path1 = "C:\\Users\\jahns\\Projects\\java\\javaQuotes\\src\\main\\resources\\recentquotes.json";
+
+        String path1 = "src/main/resources/recentquotes.json";
         String expected1 = "Marilyn Monroe:  “I am good, but not an angel. I do sin, but I am not the devil. I am just a small girl in a big world trying to find someone to love.” 18651 likes";
         String expected2 = "买证★买证件★买印第安纳大学布鲁明顿分校毕业证:  “来自QQ/微信：996330050的爱*-*0 likes";
         String expected50 = "买证★买证件★买索诺玛州立大学毕业证:  “来自QQ/微信：996330050的爱*-*0 likes";
@@ -24,6 +25,7 @@ public class AppTest {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        // Messages display when test fails
         assertEquals("Json was not parsed as expected", expected1, actual[0].toString());
         assertEquals("Json was not parsed as expected", expected2, actual[1].toString());
         assertEquals("Json was not parsed as expected", expected50, actual[50].toString());
