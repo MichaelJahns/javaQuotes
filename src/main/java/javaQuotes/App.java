@@ -5,32 +5,100 @@ package javaQuotes;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class App {
     public static void main(String[] args) {
+//        try {
+//            JsonQuote[] quotes = jsonParse(args[0]);
+//            JsonQuote output = randomQuote(Math.random(), quotes);
+//            System.out.println(output);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+
+        String apiURL = "https://favqs.com/api/qotd";
+        URL url;
         try {
-            Quote[] quotes = jsonParse(args[0]);
-            Quote output = randomQuote(Math.random(), quotes);
+            url = new URL(apiURL);
+            String JOSON = getJSONfromApi(url);
+            GenericQuote[] quotesArray = getQuoteFromJOSON(JOSON);
+            GenericQuote output = randomQuote(Math.random(), quotesArray);
             System.out.println(output);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public static Quote[] jsonParse(String path) throws FileNotFoundException {
+    public static JsonQuote[] jsonParse(String path) throws FileNotFoundException {
         Gson gson = new Gson();
         BufferedReader reader = new BufferedReader(new FileReader(path));
-        Quote[] output = gson.fromJson(reader, Quote[].class);
+        JsonQuote[] output = gson.fromJson(reader, JsonQuote[].class);
         return output;
     }
 
-    public static Quote randomQuote(double random, Quote[] quotes) {
+    public static GenericQuote randomQuote(double random, GenericQuote[] quotes) {
         int randomIndex = (int) (random * quotes.length);
-        Quote output = quotes[randomIndex];
+        GenericQuote output = quotes[randomIndex];
         return output;
     }
+
+    public static String getJSONfromApi(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        try {
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Authorization", "Token token = \"28eb745aa9f46544cb25d1f2cd2c82be\"");
+            int status = connection.getResponseCode();
+            if (status == 200) {
+                try (BufferedReader reader = getBufferedReader(connection)) {
+                    return dataFromBufferedReader(reader);
+                }
+            } else {
+                System.out.println("Error " + status + ". Showing offline quote.");
+            }
+        } catch (Exception e) {
+            try {
+                BufferedReader reader = localGetBufferedReader("src/main/resources/recentquotes.json");
+                return dataFromBufferedReader(reader);
+            } catch (Exception z) {
+                z.getMessage();
+            }
+
+        } finally {
+            connection.disconnect();
+        }
+        return null;
+    }
+
+    public static BufferedReader getBufferedReader(HttpURLConnection connection) throws IOException {
+        InputStream inputStream = connection.getInputStream();
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader reader = new BufferedReader(inputStreamReader);
+        return reader;
+    }
+
+    public static BufferedReader localGetBufferedReader(String path) throws Exception {
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        return reader;
+    }
+
+    public static String dataFromBufferedReader(BufferedReader reader) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        String currentLine = reader.readLine();
+        while (currentLine != null) {
+            builder.append(currentLine);
+            currentLine = reader.readLine();
+        }
+        return builder.toString();
+    }
+
+    public static GenericQuote[] getQuoteFromJOSON(String JOSON) {
+        Gson gson = new Gson();
+        return gson.fromJson(JOSON, GenericQuote[].class);
+    }
+
+
 }
