@@ -19,14 +19,14 @@ public class App {
 //            e.printStackTrace();
 //        }
 
-        String apiURL = "https://favqs.com/api/qotd";
+        String apiURL = "https://favqs.com/api/qotkjbd";
         URL url;
         try {
             url = new URL(apiURL);
             String JOSON = getJSONfromApi(url);
-            GenericQuote[] quotesArray = getQuoteFromJOSON(JOSON);
-            GenericQuote output = randomQuote(Math.random(), quotesArray);
-            System.out.println(output);
+            GenericQuote quotesArray = getQuoteFromJOSON(JOSON);
+//            GenericQuote output = randomQuote(Math.random(), quotesArray);
+            System.out.println(quotesArray);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,9 +95,9 @@ public class App {
         return builder.toString();
     }
 
-    public static GenericQuote[] getQuoteFromJOSON(String JOSON) {
+    public static GenericQuote getQuoteFromJOSON(String JOSON) {
         Gson gson = new Gson();
-        return gson.fromJson(JOSON, GenericQuote[].class);
+        return gson.fromJson(JOSON, GenericQuote.class);
     }
 
 
